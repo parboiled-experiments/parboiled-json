@@ -1,6 +1,5 @@
 package org.parboiled.json;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +17,7 @@ import org.parboiled.annotations.DontLabel;
 import org.parboiled.annotations.SkipNode;
 import org.parboiled.matchers.ProxyMatcher;
 
-public class DeclParser extends BaseJsonParser {
+public abstract class DeclParser extends BaseJsonParser {
 
 	protected Rule __ = _0n(AnyOf(" \t\r\n")).suppressNode();
 	protected Rule _d = _1n(CharRange('0', '9')).suppressSubnodes();
@@ -57,14 +56,6 @@ public class DeclParser extends BaseJsonParser {
 	protected static Map<String, Rule> LEXER = new HashMap<>();
 	protected Map<String, Action<?>> ACTIONS = new HashMap<>();
 
-	protected DeclParser(String start, String jsonString) {
-		super(start, jsonString);
-	}
-
-	protected DeclParser(String start, InputStream jsonStream) {
-		super(start, jsonStream);
-	}
-
 	protected void initLexer() {
 		LEXER.put("__", __);
 		LEXER.put("_d", _d);
@@ -75,10 +66,10 @@ public class DeclParser extends BaseJsonParser {
 	protected void initActions() {
 	}
 
-	public Rule start() {
+	public Rule start(String start, JsonObject json) {
 		initLexer();
 		initActions();
-		parseRule(null, this.json);
+		parseRule(null, json);
 		Rule startRule = RULE_CACHE.get(start);
 		initProxies();
 		return startRule;

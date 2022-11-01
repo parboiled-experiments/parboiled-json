@@ -1,6 +1,5 @@
 package org.parboiled.json;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,18 +12,10 @@ import org.parboiled.Rule;
 import org.parboiled.annotations.DontLabel;
 import org.parboiled.matchers.ProxyMatcher;
 
-public class PegParser extends BaseJsonParser {
+public abstract class PegParser extends BaseJsonParser {
 
-	protected PegParser(String start, String jsonString) {
-		super(start, jsonString);
-	}
-
-	protected PegParser(String start, InputStream jsonStream) {
-		super(start, jsonStream);
-	}
-
-	public Rule start() {
-		parseRules(this.json.getJsonArray("rules"));
+	protected Rule start(String start, JsonObject json) {
+		parseRules(json.getJsonArray("rules"));
 		Rule startRule = RULE_CACHE.get(start);
 		initProxies();
 		return startRule;
