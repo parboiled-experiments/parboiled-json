@@ -1,5 +1,6 @@
 package org.parboiled.util;
 
+import java.util.List;
 import java.util.function.BiFunction;
 
 import org.parboiled.Node;
@@ -22,15 +23,28 @@ public class ParseUtils {
 		return runner;
 	}
 
-	public static void visitTree(Node<?> node, BiFunction<Node<?>, Integer, ?> visitor) {
-		visitTree(1, node, visitor);
+	public static void visitTree(Node<?> node, BiFunction<Node<?>, Integer, Boolean> visitor) {
+		visitTree(node, 1, visitor);
 	}
 
-	public static void visitTree(int level, Node<?> node, BiFunction<Node<?>, Integer, ?> visitor) {
-		visitor.apply(node, level);
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static void visitTree(Node<?> node, int level, BiFunction<Node<?>, Integer, Boolean> visitor) {
+		boolean proceed = visitor.apply(node, level);
 		level++;
-		for (Node<?> sub : node.getChildren()) {
-			visitTree(level, sub, visitor);
+		if (proceed) {
+			visitTree((List) node.getChildren(), level, visitor);
+		}
+	}
+
+	public static void visitTree(List<Node<?>> children, int level, BiFunction<Node<?>, Integer, Boolean> visitor) {
+		for (Node<?> sub : children) {
+			visitTree(sub, level, visitor);
+		}
+	}
+
+	public static void applyChildren(List<Node<?>> children, int level, BiFunction<Node<?>, Integer, Boolean> fn) {
+		for (Node<?> sub : children) {
+			fn.apply(sub, level);
 		}
 	}
 

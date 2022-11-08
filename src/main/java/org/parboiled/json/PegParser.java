@@ -59,6 +59,18 @@ public abstract class PegParser extends BaseJsonParser {
 			JsonObject expr = jsonObj.getJsonObject("expression");
 			rule = parseRule(expr);
 
+		} else if ("named".equals(type)) {
+
+			JsonObject expr = jsonObj.getJsonObject("expression");
+			rule = parseRule(expr);
+			String name = jsonObj.getString("name");
+			rule.label(name);
+
+		} else if ("text".equals(type)) {
+
+			JsonObject expr = jsonObj.getJsonObject("expression");
+			rule = parseRule(expr);
+
 		} else if ("rule_ref".equals(type)) {
 
 			String proxyName = jsonObj.getString("name");
@@ -83,6 +95,11 @@ public abstract class PegParser extends BaseJsonParser {
 
 			JsonObject expr = jsonObj.getJsonObject("expression");
 			rule = TestNot(parseRule(expr)).skipNode();
+
+		} else if ("simple_and".equals(type)) {
+
+			JsonObject expr = jsonObj.getJsonObject("expression");
+			rule = Test(parseRule(expr)).skipNode();
 
 		} else if ("zero_or_more".equals(type)) {
 
