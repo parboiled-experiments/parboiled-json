@@ -1,8 +1,5 @@
 package org.parboiled.json;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonString;
@@ -10,7 +7,6 @@ import javax.json.JsonValue;
 
 import org.parboiled.Rule;
 import org.parboiled.annotations.DontLabel;
-import org.parboiled.matchers.ProxyMatcher;
 
 public abstract class PegParser extends BaseJsonParser {
 
@@ -74,14 +70,7 @@ public abstract class PegParser extends BaseJsonParser {
 		} else if ("rule_ref".equals(type)) {
 
 			String proxyName = jsonObj.getString("name");
-			ProxyMatcher proxy = new ProxyMatcher();
-			List<ProxyMatcher> proxies = PROXY_CACHE.get(proxyName);
-			if (proxies == null) {
-				proxies = new ArrayList<>();
-				PROXY_CACHE.put(proxyName, proxies);
-			}
-			proxies.add(proxy);
-			rule = proxy;
+			rule = createProxy(proxyName);
 
 		} else if ("optional".equals(type)) {
 
