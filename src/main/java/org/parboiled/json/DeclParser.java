@@ -15,6 +15,7 @@ import org.parboiled.annotations.DontLabel;
 import org.parboiled.annotations.SkipNode;
 import org.parboiled.matchers.ActionMatcher;
 
+//TODO : Rename BaseDeclJsonParser
 public abstract class DeclParser extends BaseJsonParser {
 
 	protected Rule __ = _0n(AnyOf(" \t\r\n")).suppressNode();

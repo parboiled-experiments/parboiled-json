@@ -11,6 +11,7 @@ import org.parboiled.annotations.DontLabel;
 import org.parboiled.matchers.Matcher;
 import org.parboiled.matchers.ProxyMatcher;
 
+// TODO : Rename BaseDeclParser
 public abstract class BaseJsonParser extends BaseParser<Object> {
 
 	protected Map<String, Rule> RULE_CACHE = new HashMap<>();
